@@ -1,0 +1,13 @@
+[
+  { "id": "margin-job-costing", "name": "Margin & job costing" },
+  { "id": "wip-revenue", "name": "WIP & revenue recognition" },
+  { "id": "cash-working-capital", "name": "Cash flow & working capital" },
+  { "id": "ar-payment-claims", "name": "AR & payment claims" },
+  { "id": "ap-suppliers-procurement", "name": "AP, suppliers & procurement" },
+  { "id": "variations", "name": "Variations" },
+  { "id": "contract-loi-risk", "name": "Contract & LOI risk" },
+  { "id": "forecast-variance", "name": "Forecast & variance" },
+  { "id": "tender-pricing", "name": "Tender pricing & bid decisions" },
+  { "id": "funding-capital", "name": "Funding & cost of capital" },
+  { "id": "labour-overhead", "name": "Labour & overhead cost" }
+]

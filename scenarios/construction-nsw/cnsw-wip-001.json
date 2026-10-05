@@ -1,0 +1,41 @@
+{
+  "id": "cnsw-wip-001",
+  "version": 1,
+  "pack": "construction-nsw",
+  "level": 2,
+  "title": "WIP and forecast margin review",
+  "body": "You manage a plumbing subcontract on a fictional commercial construction project in NSW. The original contract value is {{contract|currency}}, with {{variations|currency}} in approved variations. Cost incurred to date is {{incurred|currency}}, and the latest estimate to complete is {{remaining|currency}}. Claims submitted to date total {{claimed|currency}}, before retention. Use the cost-to-cost method for this exercise. All amounts are AUD and exclude GST. There are no unapproved variations or other revenue adjustments.",
+  "question": "Calculate the forecast gross profit, forecast gross profit percentage, percentage complete, earned revenue, and over/underbilling. Enter over/underbilling as claims submitted minus earned revenue: a negative amount means underbilling.",
+  "params": [
+    { "name": "contract", "min": 4000000, "max": 4800000, "step": 50000 },
+    { "name": "variations", "min": 400000, "max": 800000, "step": 50000 },
+    { "name": "incurred", "min": 2800000, "max": 3400000, "step": 50000 },
+    { "name": "remaining", "min": 700000, "max": 1100000, "step": 50000 },
+    { "name": "claimed", "min": 3400000, "max": 4000000, "step": 50000 }
+  ],
+  "constraints": [
+    { "left": "claimed", "op": "<=", "right": "contract" }
+  ],
+  "computed": [
+    { "id": "forecastCost", "fn": "eac", "args": { "costIncurred": "incurred", "estimateToComplete": "remaining" } },
+    { "id": "gp", "fn": "forecastGp", "args": { "contractValue": "contract", "approvedVariations": "variations", "forecastCost": "forecastCost" } },
+    { "id": "gpPct", "fn": "forecastGpPct", "args": { "contractValue": "contract", "approvedVariations": "variations", "forecastCost": "forecastCost" } },
+    { "id": "complete", "fn": "percentComplete", "args": { "costIncurred": "incurred", "estimateToComplete": "remaining" } },
+    { "id": "earned", "fn": "earnedRevenue", "args": { "contractValue": "contract", "approvedVariations": "variations", "percentComplete": "complete" } },
+    { "id": "billing", "fn": "overUnderBilling", "args": { "claimedToDate": "claimed", "earnedRevenue": "earned" } }
+  ],
+  "numericInputs": [
+    { "id": "gp-input", "label": "Forecast gross profit", "unit": "currency" },
+    { "id": "gp-pct-input", "label": "Forecast gross profit percentage", "unit": "percent" },
+    { "id": "complete-input", "label": "Percentage complete", "unit": "percent" },
+    { "id": "earned-input", "label": "Earned revenue", "unit": "currency" },
+    { "id": "billing-input", "label": "Over/underbilling", "unit": "currency" }
+  ],
+  "rubric": [
+    { "id": "p1", "type": "numeric", "skill": "margin-job-costing", "weight": 2, "input": "gp-input", "truth": "gp", "tolerancePct": 1 },
+    { "id": "p2", "type": "numeric", "skill": "margin-job-costing", "weight": 1, "input": "gp-pct-input", "truth": "gpPct", "tolerancePct": 1 },
+    { "id": "p3", "type": "numeric", "skill": "wip-revenue", "weight": 2, "input": "complete-input", "truth": "complete", "tolerancePct": 1 },
+    { "id": "p4", "type": "numeric", "skill": "wip-revenue", "weight": 2, "input": "earned-input", "truth": "earned", "tolerancePct": 1 },
+    { "id": "p5", "type": "numeric", "skill": "wip-revenue", "weight": 2, "input": "billing-input", "truth": "billing", "tolerancePct": 1 }
+  ]
+}
